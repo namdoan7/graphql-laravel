@@ -6,8 +6,10 @@ namespace Rebing\GraphQL\Support;
 
 use Closure;
 use GraphQL\Type\Definition\ResolveInfo;
-use GraphQL\Type\Definition\Type as GraphqlType;
+use GraphQL\Type\Definition\Type as GraphQLType;
 use Illuminate\Contracts\Validation\Validator as ValidatorContract;
+use Illuminate\Pipeline\Pipeline;
+use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Validator;
 use InvalidArgumentException;
 use Rebing\GraphQL\Error\AuthorizationError;
@@ -21,6 +23,9 @@ use ReflectionMethod;
 abstract class Field
 {
     protected $attributes = [];
+
+    /** @var string[] */
+    protected $middleware = [];
 
     /**
      * Override this in your queries or mutations
@@ -43,7 +48,7 @@ abstract class Field
         return [];
     }
 
-    abstract public function type(): GraphqlType;
+    abstract public function type(): GraphQLType;
 
     /**
      * @return array<string,array>
@@ -94,7 +99,38 @@ abstract class Field
         return Validator::make($args, $rules, $messages);
     }
 
-    protected function getResolver(): ?Closure
+    protected function getResolver() : ?Closure
+    {
+        $resolver = $this->originalResolver();
+
+        if (! $resolver) {
+            return null;
+        }
+
+        return function ($root, ...$arguments) use ($resolver) {
+            return app(Pipeline::class)
+                ->send(array_merge([$this], $arguments))
+                ->through($this->middleware)
+                ->via('resolve')
+                ->then(function ($arguments) use ($resolver, $root) {
+                    $result = $resolver($root, ...array_slice($arguments, 1));
+
+                    foreach ($this->middleware as $name) {
+                        $middleware = App::make($name);
+
+                        if (method_exists($middleware, 'terminate')) {
+                            App::terminating(function () use ($arguments, $middleware, $result) {
+                                $middleware->terminate($this, ...array_slice($arguments, 1), ...[$result]);
+                            });
+                        }
+                    }
+
+                    return $result;
+                });
+        };
+    }
+
+    protected function originalResolver(): ?Closure
     {
         if (! method_exists($this, 'resolve')) {
             return null;

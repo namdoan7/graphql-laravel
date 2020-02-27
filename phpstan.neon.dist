@@ -17,7 +17,18 @@ parameters:
         - '/Parameter #1 \$haystack of function mb_stripos expects string, \(array\)\|string given/'
         - '/Strict comparison using === between null and array will always evaluate to false/'
         - '/Cannot access offset . on array\|Closure/'
-        # \Rebing\GraphQL\Support\SelectFields::handleFields
+
+        # Rebing\GraphQL\Support\Middleware::handle
+
+        - '/Method Rebing\\GraphQL\\Support\\Middleware::handle\(\) has no return typehint specified/'
+        - '/Method Rebing\\GraphQL\\Support\\Middleware::handle\(\) has parameter \$args with no typehint specified/'
+        - '/Method Rebing\\GraphQL\\Support\\Middleware::handle\(\) has parameter \$context with no typehint specified/'
+        - '/Method Rebing\\GraphQL\\Support\\Middleware::handle\(\) has parameter \$root with no typehint specified/'
+        - '/Method Rebing\\GraphQL\\Support\\Middleware::resolve\(\) has no return typehint specified/'
+        - '/Method Rebing\\GraphQL\\Support\\Middleware::resolve\(\) has parameter \$arguments with no value type specified in iterable type array/'
+
+        # Rebing\GraphQL\Support\SelectFields::handleFields
+
         - '/Parameter #1 \$function of function call_user_func expects callable\(\): mixed, array\(mixed, mixed\) given/'
         - '/Binary operation "." between string and array\|string\|null results in an error/'
         - '/Parameter #1 \$key of function array_key_exists expects int\|string, string\|false given/'
@@ -32,16 +43,25 @@ parameters:
         - '/Cannot call method set\(\) on Illuminate\\Config\\Repository\|null/'
         - '/Parameter #4 \$currentPage of class Illuminate\\Pagination\\LengthAwarePaginator constructor expects int\|null, float\|int given/'
         - '/Parameter #1 \$offset of method Illuminate\\Support\\Collection::slice\(\) expects int, float\|int given/'
+
         # tests/Unit/GraphQLTest.php
+
         - '/Call to an undefined method GraphQL\\Type\\Definition\\Type::getFields\(\)/'
         - '/Call to an undefined method Mockery\\/'
         - '/Parameter #2 \$replace of function str_replace expects array\|string, string\|null given/'
+
         # tests/Unit/UploadTests/UploadMultipleFilesMutation.php
+
         - '/Anonymous function should return string but returns string\|false/'
+
         # tests/Unit/UploadTests/UploadSingleFileMutation.php
+
         - '/Method Rebing\\GraphQL\\Tests\\Unit\\UploadTests\\UploadSingleFileMutation::resolve\(\) should return string but returns string\|false/'
+
         # tests/Database/AuthorizeArgsTests/TestAuthorizationArgsQuery.php
+
         - '/Trying to invoke Closure\|null but it might not be a callable/'
         - '/Property Rebing\\GraphQL\\Support\\Field\:\:\$name \(string\) does not accept int\|string/'
         - '/Parameter #1 \$name of method Rebing\\GraphQL\\Support\\Type\:\:getFieldResolver\(\) expects string, int\|string given/'
+
     reportUnmatchedIgnoredErrors: true

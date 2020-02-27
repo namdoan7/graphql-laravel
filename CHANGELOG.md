@@ -7,6 +7,7 @@ CHANGELOG
 ### Added
 - Add support for custom authorization message [\#578 / Sh1d0w](https://github.com/rebing/graphql-laravel/pull/578)
 - Add support for macros on the GraphQL service/facade [\#592 / stevelacey](https://github.com/rebing/graphql-laravel/pull/592)
+- Add support for resolver middleware [\#594 / stevelacey](https://github.com/rebing/graphql-laravel/pull/594)
 ### Fixed
 - Fix the infinite loop as well as sending the correct matching input data to the rule-callback [\#579 / crissi](https://github.com/rebing/graphql-laravel/pull/579)
 ### Changed
