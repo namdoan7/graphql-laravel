@@ -108,7 +108,7 @@ abstract class Field
         }
 
         return function ($root, ...$arguments) use ($resolver) {
-            return app(Pipeline::class)
+            return App::make(Pipeline::class)
                 ->send(array_merge([$this], $arguments))
                 ->through($this->middleware)
                 ->via('resolve')
@@ -191,7 +191,7 @@ abstract class Field
                     return $arguments[3];
                 }
 
-                return app()->make($className);
+                return App::make($className);
             }, $additionalParams);
 
             return call_user_func_array($resolver, array_merge(
